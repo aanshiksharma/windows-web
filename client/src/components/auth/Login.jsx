@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import "./desktop.css";
+import "./login.css";
 
-// Components
-import TaskBar from "../components/TaskBar";
-
-function Desktop() {
+function Login() {
   useEffect(() => {
     let userData = JSON.parse(localStorage.getItem("data")) || [];
   });
 
   const [settings, setSettings] = useState([]);
+
   const wallpaper = settings.wallpaper || "/wallpapers/default.jpg";
 
   return (
     <>
-      <div id="wallpaper">
+      <div className="wallpaper">
         <img src={wallpaper} alt="" />
       </div>
-      <TaskBar />
+      <div className="underlay"></div>
+      <div id="login-page">Login</div>
     </>
   );
 }
 
-export default Desktop;
+export default Login;

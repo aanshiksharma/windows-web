@@ -1,0 +1,11 @@
+.icon-container {
+  color: #e6e6e6;
+  padding: 0.5rem;
+  transition: all 200ms ease;
+  outline: 0;
+
+  &:hover,
+  &:focus {
+    background: hsl(0 0 100/0.05);
+  }
+}

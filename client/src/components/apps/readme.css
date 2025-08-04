@@ -1,0 +1,30 @@
+.readme {
+  max-width: 75ch;
+  margin-inline: auto;
+
+  .highlight-text {
+    position: relative;
+    padding-inline-start: 1rem;
+
+    &::before {
+      content: "";
+      width: 2px;
+      height: 100%;
+      background: #e6e6e6;
+      border-radius: 2px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+    transition: all 100ms ease;
+
+    &:hover {
+      color: #888;
+    }
+  }
+}
