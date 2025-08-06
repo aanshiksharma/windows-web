@@ -10,14 +10,14 @@ import WindowHeader from "./WindowHeader";
 
 import "./window.css";
 
-function Window({ appId, title }) {
+function Window({ appId, title, size, position, transform }) {
   const [screenSize, setScreenSize] = useState({
     fullScreen: false,
-    top: "35%",
-    left: "30%",
-    transform: "translate(-50%, -50%)",
-    width: "45vw",
-    height: "60vh",
+    top: position.top,
+    left: position.left,
+    transform: transform,
+    width: size.width,
+    height: size.height,
   });
 
   const dispatch = useDispatch();
@@ -31,11 +31,11 @@ function Window({ appId, title }) {
       if (currSize.fullScreen)
         return {
           fullScreen: false,
-          top: "35%",
-          left: "30%",
-          transform: "translate(-50%, -50%)",
-          width: "45vw",
-          height: "60vh",
+          top: position.top,
+          left: position.left,
+          transform: transform,
+          width: size.width,
+          height: size.height,
         };
       else
         return {

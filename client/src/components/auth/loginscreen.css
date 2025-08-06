@@ -1,0 +1,99 @@
+body {
+  color: hsl(0 0 95);
+}
+
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.underlay {
+  position: absolute;
+  inset: 0;
+  background: hsl(0 0 100/ 0.1);
+  z-index: -1;
+  backdrop-filter: blur(60px);
+}
+
+#login-page {
+  .user-icon {
+    .icon-container {
+      border: 6px solid hsl(0 0 90);
+    }
+  }
+
+  .wrong-password {
+    .btn {
+      border: 2px solid hsl(0 0 90/0.5);
+
+      &:focus,
+      &:hover {
+        border-color: hsl(0 0 90);
+        color: hsl(0 0 90);
+      }
+    }
+  }
+
+  .user-profile-container {
+    .user-profile {
+      transition: all 200ms ease;
+
+      &:hover {
+        background: hsl(0 0 100/ 0.1);
+      }
+    }
+  }
+}
+
+#signup-page {
+  .wrapper {
+    backdrop-filter: blur(40px);
+    background: hsl(0 0 20/0.2);
+    border: 2px solid hsl(0 0 100/ 0.1);
+  }
+
+  .btn {
+    border: 2px solid hsl(0 0 75/0.5);
+    color: hsl(0 0 85);
+    transition: all 200ms ease;
+
+    &:hover,
+    &:focus {
+      background: hsla(207 100 50/ 0.3);
+      border-color: hsl(180 100 50/0.05);
+    }
+  }
+
+  a {
+    outline: 0;
+    text-decoration: none;
+    transition: all 200ms ease;
+    color: hsl(207 100 50);
+
+    &:hover {
+      color: hsl(207 100 70);
+    }
+
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}
+
+#signup-page,
+#login-page {
+  input {
+    border: 2px solid hsl(0 0 90/0.2);
+    background: hsl(0 0 90/0.1);
+    backdrop-filter: blur(40px);
+    color: hsl(0 0 100);
+    transition: all 200ms ease;
+
+    &:focus {
+      background: hsl(0 0 15);
+      border-color: hsl(0 0 90/0.2);
+      border-bottom-color: hsl(207 100 50);
+    }
+  }
+}

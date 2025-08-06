@@ -1,7 +1,6 @@
 #taskbar {
   position: fixed;
   bottom: 0;
-  width: 100%;
   z-index: 1000;
 
   border-block-start: 1px solid hsl(0 0 100/0.2);
@@ -13,7 +12,8 @@
     padding: 0.5rem;
     transition: all 200ms ease;
 
-    svg {
+    svg,
+    .start-menu-button-container {
       transition: all 200ms ease;
     }
 
@@ -22,41 +22,35 @@
     }
 
     &:active {
-      svg {
+      & > svg,
+      .start-menu-button-container {
         scale: 0.8;
       }
     }
   }
 
-  #app-icons-container {
-    .default-icons {
-      .searchbar-container {
-        #taskbar-searchbar {
-          padding-block: 0.4rem;
-          padding-inline: 1rem;
-          background: hsl(0 0 100/0.1);
-          /* backdrop-filter: blur(10px); */
-          border: 1px solid transparent;
+  #taskbar-searchbar {
+    background: hsl(0 0 100/0.1);
+    /* backdrop-filter: blur(10px); */
+    border: 1px solid transparent;
 
-          input {
-            outline: 0;
-            border: 0;
-          }
+    svg {
+      transition: all 100ms ease;
+    }
 
-          svg {
-            transition: all 100ms ease;
-          }
+    &:focus-within {
+      background: hsl(0 0 12);
+      border-color: hsl(0 0 100/0.2);
+    }
 
-          &:focus-within {
-            background: hsl(0 0 12);
-            border-color: hsl(0 0 100/0.2);
-          }
+    &:has(:active) svg {
+      scale: 0.75;
+    }
+  }
 
-          &:has(:active) svg {
-            scale: 0.75;
-          }
-        }
-      }
+  #taskbar-clock {
+    &:hover {
+      background: hsl(0 0 100/0.1);
     }
   }
 }

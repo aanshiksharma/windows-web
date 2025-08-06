@@ -4,6 +4,7 @@ import { Collection, Microsoft, Search } from "react-bootstrap-icons";
 import "./taskbar.css";
 
 import StartMenu from "./StartMenu";
+import TaskbarClock from "../ui/TaskbarClock";
 
 function TaskBar() {
   const [startMenuVisibility, setStartMenuVisibility] = useState(false);
@@ -19,7 +20,11 @@ function TaskBar() {
         handleStartMenu={handleStartMenu}
         pinnedApps={[]}
       />
-      <div id="taskbar" className="flex justify-center items-center py-1">
+
+      <div
+        id="taskbar"
+        className="flex justify-center relative items-center py-1 w-full px-3"
+      >
         <div id="news-feed-container"></div>
 
         <div id="app-icons-container" className="flex items-center">
@@ -35,18 +40,20 @@ function TaskBar() {
               }
               onClick={handleStartMenu}
             >
-              <Microsoft size={24} />
+              <div className="start-menu-button-container flex items-center justify-center rounded-[1.5px] overflow-hidden">
+                <Microsoft size={24} />
+              </div>
             </button>
 
             <div className="searchbar-container">
               <div
                 id="taskbar-searchbar"
-                className="flex items-center justify-center gap-3 w-full rounded-full"
+                className="flex items-center justify-center gap-3 px-[0.8rem] py-[0.4rem] w-full rounded-full"
               >
                 <Search size={16} />
                 <input
                   type="text"
-                  className="w-full text-sm font-normal"
+                  className="w-full text-sm font-normal border-0 outline-0"
                   placeholder="Search"
                 />
               </div>
@@ -59,7 +66,10 @@ function TaskBar() {
 
           <div className="pinned-icons flex items-center gap-2"></div>
         </div>
-        <div id="utility-tools-container"></div>
+
+        <div id="utility-tools-container" className="absolute right-3">
+          <TaskbarClock />
+        </div>
       </div>
     </>
   );

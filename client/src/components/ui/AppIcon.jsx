@@ -1,32 +1,37 @@
-import { useDispatch } from "react-redux";
-import { openWindow } from "../../state/slices/windowSlice";
-import { FiletypeMd } from "react-bootstrap-icons";
+import { Gear, FiletypeMd, Calculator, File } from "react-bootstrap-icons";
 
 import "./appicon.css";
 
-function AppIcon({ name, icon, onDoubleClick }) {
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch(
-      openWindow({
-        appId: "readme", // This must match your AppRenderer switch
-        title: name,
-        position: { top: "35%", left: "30%" },
-        size: { width: "45vw", height: "60vh" },
-      })
-    );
+function AppIcon({ name, icon, bootstrapIcon, onDoubleClick }) {
+  const BootstrapIcon = ({ icon, size }) => {
+    switch (icon) {
+      case "gear":
+        return <Gear size={size} />;
+      case "filetypeMd":
+        return <FiletypeMd size={size} />;
+      case "calculator":
+        return <Calculator size={size} />;
+      default:
+        return <File size={size} />;
+    }
   };
 
   return (
     <>
       <button
-        className="icon-container flex flex-col items-center gap-2 rounded-md"
-        onDoubleClick={onDoubleClick || handleClick}
+        className="icon-container p-2 flex flex-col items-center gap-2 rounded-md min-w-20"
+        onDoubleClick={onDoubleClick}
       >
-        <div className="icon">
-          {/* <img src={app.icon} alt={app.name} /> */}
-          <FiletypeMd size={40} />
+        <div className="icon w-12 h-full flex items-center justify-center">
+          {icon ? (
+            <img
+              src={icon}
+              alt={name}
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <BootstrapIcon icon={bootstrapIcon} size={38} />
+          )}
         </div>
         <div className="label text-xs">{name}</div>
       </button>

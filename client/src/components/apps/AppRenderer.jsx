@@ -1,6 +1,7 @@
 import ReadmeApp from "./ReadmeApp";
 import CalculatorApp from "./CalculatorApp";
 import SettingsApp from "./SettingsApp";
+import ThisPC from "./ThisPC";
 
 function AppRenderer({ appId }) {
   switch (appId) {
@@ -10,6 +11,8 @@ function AppRenderer({ appId }) {
       return <CalculatorApp />;
     case "settings":
       return <SettingsApp />;
+    case "thispc":
+      return <ThisPC />;
     default:
       return (
         <>

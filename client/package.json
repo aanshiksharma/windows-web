@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/vite": "^4.1.11",
+    "gsap": "^3.13.0",
     "re-resizable": "^6.11.2",
     "react": "^19.1.0",
     "react-bootstrap-icons": "^1.11.6",
