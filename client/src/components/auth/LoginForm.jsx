@@ -117,10 +117,6 @@ function LoginForm() {
     });
   };
 
-  if (users.length === 0) {
-    navigate("/auth/signup");
-  }
-
   useEffect(() => {
     gsap.to(".wrapper", {
       opacity: 1,
@@ -137,12 +133,30 @@ function LoginForm() {
         <Form user={selectedUser} />
       ) : (
         <>
-          {users.length !== 1 && (
+          {users.length !== 1 && users.length !== 0 && (
             <p className="font-semibold text-2xl">Choose an Account.</p>
           )}
 
           <div className="wrapper opacity-0">
-            {users.length === 1 ? (
+            {users.length === 0 ? (
+              <div className="no-accounts flex flex-col gap-12">
+                <p className="font-semibold text-2xl">No accounts found.</p>
+                <button
+                  type="button"
+                  className="btn self-center px-4 py-1 rounded-md font-semibold outline-0"
+                  autoFocus
+                  onClick={() => {
+                    gsap.to(".wrapper", {
+                      opacity: 0,
+                      duration: 0.2,
+                      onComplete: () => navigate("/auth/signup"),
+                    });
+                  }}
+                >
+                  Create one now
+                </button>
+              </div>
+            ) : users.length === 1 ? (
               <Form user={users[0]} />
             ) : (
               <div className="user-profile-container flex items-center gap-2">

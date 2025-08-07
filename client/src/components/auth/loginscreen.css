@@ -17,6 +17,20 @@ body {
 }
 
 #login-page {
+  .wrapper {
+    .no-accounts {
+      .btn {
+        background: hsl(0 0 100 / 0.1);
+        border: 2px solid hsl(0 0 90/0.2);
+        transition: all 200ms ease;
+
+        &:focus,
+        &:hover {
+          border-color: hsl(0 0 90);
+        }
+      }
+    }
+  }
   .user-icon {
     .icon-container {
       border: 6px solid hsl(0 0 90);
