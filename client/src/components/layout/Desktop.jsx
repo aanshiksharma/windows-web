@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "./desktop.css";
 
 // Components
-import TaskBar from "./TaskBar";
+import TaskBar from "./taskbar/TaskBar";
 import AppIcon from "../ui/AppIcon";
 import WindowManager from "../windows/WindowManager";
 
@@ -11,14 +11,13 @@ import WindowManager from "../windows/WindowManager";
 import { useDispatch } from "react-redux";
 import { openWindow } from "../../state/slices/windowSlice";
 
-import nativeApps from "../../state/json/nativeApps.json";
+import apps from "../../state/json/apps.json";
 
 // Animations
 import gsap from "gsap";
 
 function Desktop() {
   const [wallpaper, setWallpaper] = useState("/wallpapers/default.jpg");
-  const dispatch = useDispatch();
 
   useEffect(() => {
     gsap.to(".starting-animation-overlay", {
@@ -41,24 +40,14 @@ function Desktop() {
       </div>
 
       <div className="desktop-icons-container px-2 pt-2 pb-12 gap-y-3 gap-x-1 h-screen w-fit flex flex-col flex-wrap items-center justify-start">
-        {nativeApps.map((app) => (
-          <AppIcon
-            key={app.id}
-            name={app.title}
-            icon={app.icon}
-            bootstrapIcon={app.bootstrapIcon}
-            onDoubleClick={() =>
-              dispatch(
-                openWindow({
-                  appId: app.id,
-                  title: app.title,
-                  position: app.position,
-                  size: app.size,
-                  transform: app.transform,
-                })
-              )
-            }
-          />
+        {apps.systemApps.map((app) => (
+          <AppIcon key={app.id} {...app} />
+        ))}
+        {apps.nativeApps.map((app) => (
+          <AppIcon key={app.id} {...app} />
+        ))}
+        {apps.adminApps.map((app) => (
+          <AppIcon key={app.id} {...app} />
         ))}
       </div>
 

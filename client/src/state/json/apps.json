@@ -1,0 +1,58 @@
+{
+  "systemApps": [
+    {
+      "id": "sys-app-001",
+      "appId": "thispc",
+      "title": "This PC",
+      "icon": "/icons/this-pc.avif",
+      "bootstrapIcon": null,
+      "position": { "top": "10%", "left": "10%" },
+      "size": { "width": "80vw", "height": "80vh" },
+      "transform": "translate(0, 0)"
+    },
+    {
+      "id": "sys-app-002",
+      "appId": "recycleBin",
+      "title": "Recycle Bin",
+      "icon": "/icons/recycle-bin.webp",
+      "bootstrapIcon": null,
+      "position": { "top": "10%", "left": "10%" },
+      "size": { "width": "80vw", "height": "80vh" },
+      "transform": "translate(0, 0)"
+    }
+  ],
+  "nativeApps": [
+    {
+      "id": "nat-app-001",
+      "appId": "settings",
+      "title": "Settings",
+      "icon": null,
+      "bootstrapIcon": "gear",
+      "position": { "top": "35%", "left": "30%" },
+      "size": { "width": "45vw", "height": "60vh" },
+      "transform": "translate(-50%, -50%)"
+    },
+    {
+      "id": "nat-app-002",
+      "appId": "calculator",
+      "title": "Calculator",
+      "icon": null,
+      "bootstrapIcon": "calculator",
+      "position": { "top": "35%", "left": "30%" },
+      "size": { "width": "45vw", "height": "60vh" },
+      "transform": "translate(-50%, -50%)"
+    }
+  ],
+  "adminApps": [
+    {
+      "id": "adm-app-001",
+      "appId": "readme",
+      "title": "README",
+      "icon": null,
+      "bootstrapIcon": "filetypeMd",
+      "position": { "top": "15%", "left": "20%" },
+      "size": { "width": "50vw", "height": "70vh" },
+      "transform": "translate(0%, 0%)"
+    }
+  ]
+}

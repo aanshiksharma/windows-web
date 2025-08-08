@@ -1,5 +1,3 @@
-import React from "react";
-
 function ThisPC() {
   return <div>ThisPC</div>;
 }

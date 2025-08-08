@@ -1,0 +1,27 @@
+.taskbar-icon {
+  position: relative;
+
+  &.taskbar-icon-focused {
+    background: hsl(0 0 90/0.1);
+
+    &::after {
+      transition: all 400ms ease;
+      width: 40% !important;
+    }
+  }
+
+  &.taskbar-icon-open {
+    &::after {
+      content: "";
+      width: 20%;
+      height: 3px;
+      border-radius: 3px;
+      background: white;
+
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}

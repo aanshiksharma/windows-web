@@ -43,7 +43,10 @@ function Form({ user }) {
         duration: 0.5,
         onComplete: () => navigate("/desktop"),
       });
-    } else setIsWrongPassword(true);
+    } else {
+      setPassword("");
+      setIsWrongPassword(true);
+    }
   };
 
   return (

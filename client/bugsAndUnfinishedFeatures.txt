@@ -1,0 +1,10 @@
+Bugs
+
+The taskbar icons do not unfocus even after the state being changed.
+The state is being updated but the Taskbar Component is not being re-rendered.
+
+
+
+Unfinished Features
+
+On opening multiple windows, multiple icons of the same applcation appear in the taskbar which is not the expected behaviour at all. Needs to be taken care of.

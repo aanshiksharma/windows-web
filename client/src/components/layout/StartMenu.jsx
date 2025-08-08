@@ -9,7 +9,9 @@ import "./startmenu.css";
 
 // pinnedApps = [...app]
 // app = {icon: "/icons/icon.png", label: "Example"}
-function StartMenu({ visible, handleStartMenu, pinnedApps }) {
+function StartMenu({ visible, handleStartMenu }) {
+  const pinnedApps = []; // { appId, title, icon, bootstrapIcon }
+
   return (
     <>
       <div

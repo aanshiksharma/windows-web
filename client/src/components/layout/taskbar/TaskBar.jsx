@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { Collection, Microsoft, Search } from "react-bootstrap-icons";
 
 import "./taskbar.css";
 
-import StartMenu from "./StartMenu";
-import TaskbarClock from "../ui/TaskbarClock";
+// Redux
+import { useSelector } from "react-redux";
+
+// Components
+import StartMenu from "../StartMenu";
+import TaskbarClock from "../../ui/TaskbarClock";
+import TaskbarIcon from "../../ui/TaskbarIcon";
+
+import { Collection, Microsoft, Search } from "react-bootstrap-icons";
 
 function TaskBar() {
   const [startMenuVisibility, setStartMenuVisibility] = useState(false);
+
+  // States from Redux
+  const pinnedApps = useSelector((state) => state.taskbar.pinnedApps);
 
   const handleStartMenu = () => {
     setStartMenuVisibility(!startMenuVisibility);
@@ -18,7 +27,6 @@ function TaskBar() {
       <StartMenu
         visible={startMenuVisibility}
         handleStartMenu={handleStartMenu}
-        pinnedApps={[]}
       />
 
       <div
@@ -27,7 +35,7 @@ function TaskBar() {
       >
         <div id="news-feed-container"></div>
 
-        <div id="app-icons-container" className="flex items-center">
+        <div id="app-icons-container" className="flex items-center gap-1.5">
           <div className="default-icons flex items-center gap-1">
             <button
               type="button"
@@ -48,12 +56,15 @@ function TaskBar() {
             <div className="searchbar-container">
               <div
                 id="taskbar-searchbar"
-                className="flex items-center justify-center gap-3 px-[0.8rem] py-[0.4rem] w-full rounded-full"
+                className="flex items-center justify-center gap-3 px-[0.8rem] py-[0.4rem] w-full rounded-full cursor-text"
+                onClick={() => {
+                  document.querySelector("#taskbar-searchbar input").focus();
+                }}
               >
                 <Search size={16} />
                 <input
                   type="text"
-                  className="w-full text-sm font-normal border-0 outline-0"
+                  className="w-full min-w-41 text-sm font-normal border-0 outline-0"
                   placeholder="Search"
                 />
               </div>
@@ -64,7 +75,11 @@ function TaskBar() {
             </button>
           </div>
 
-          <div className="pinned-icons flex items-center gap-2"></div>
+          <div className="pinned-icons flex items-center gap-1">
+            {pinnedApps.map((pinnedApp) => (
+              <TaskbarIcon key={pinnedApp.id} {...pinnedApp} />
+            ))}
+          </div>
         </div>
 
         <div id="utility-tools-container" className="absolute right-3">

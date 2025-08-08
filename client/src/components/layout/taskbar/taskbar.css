@@ -13,6 +13,7 @@
     transition: all 200ms ease;
 
     svg,
+    img,
     .start-menu-button-container {
       transition: all 200ms ease;
     }
@@ -23,6 +24,7 @@
 
     &:active {
       & > svg,
+      img,
       .start-menu-button-container {
         scale: 0.8;
       }
@@ -31,7 +33,6 @@
 
   #taskbar-searchbar {
     background: hsl(0 0 100/0.1);
-    /* backdrop-filter: blur(10px); */
     border: 1px solid transparent;
 
     svg {
@@ -44,7 +45,7 @@
     }
 
     &:has(:active) svg {
-      scale: 0.75;
+      scale: 0.8;
     }
   }
 

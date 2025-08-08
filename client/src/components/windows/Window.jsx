@@ -1,29 +1,38 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import Draggable from "react-draggable";
 import { Resizable } from "re-resizable";
 
+// Redux
+import { useSelector, useDispatch } from "react-redux";
 import { focusWindow } from "../../state/slices/windowSlice";
-import AppRenderer from "../apps/AppRenderer";
+import { setTaskbarAppFocus } from "../../state/slices/taskbarSlice";
 
+// Components
+import AppRenderer from "../apps/AppRenderer";
 import WindowHeader from "./WindowHeader";
 
 import "./window.css";
 
-function Window({ appId, title, size, position, transform }) {
+function Window(app) {
+  const openWindows = useSelector((state) => state.window.openWindows);
+  const currentWindow = openWindows.find(
+    (window) => window.appId === app.appId
+  );
+
   const [screenSize, setScreenSize] = useState({
     fullScreen: false,
-    top: position.top,
-    left: position.left,
-    transform: transform,
-    width: size.width,
-    height: size.height,
+    top: app.position.top,
+    left: app.position.left,
+    transform: app.transform,
+    width: app.size.width,
+    height: app.size.height,
   });
 
   const dispatch = useDispatch();
 
   const handleFocus = () => {
-    dispatch(focusWindow(appId));
+    dispatch(focusWindow(app.appId));
+    dispatch(setTaskbarAppFocus(app.appId));
   };
 
   const handleFullScreen = () => {
@@ -31,11 +40,11 @@ function Window({ appId, title, size, position, transform }) {
       if (currSize.fullScreen)
         return {
           fullScreen: false,
-          top: position.top,
-          left: position.left,
-          transform: transform,
-          width: size.width,
-          height: size.height,
+          top: app.position.top,
+          left: app.position.left,
+          transform: app.transform,
+          width: app.size.width,
+          height: app.size.height,
         };
       else
         return {
@@ -51,27 +60,27 @@ function Window({ appId, title, size, position, transform }) {
 
   return (
     <div
-      className={`window overflow-hidden flex flex-col ${
-        screenSize.fullScreen ? "" : "rounded-lg"
-      }`}
-      onMouseDown={handleFocus}
+      className={`window shadow-2xs min-w-[500px] min-h-[400px] absolute overflow-hidden flex flex-col ${
+        !screenSize.fullScreen && "rounded-lg"
+      } ${currentWindow.isMinimized && "hidden"}`}
+      onClick={handleFocus}
       style={{
         top: screenSize.top,
         left: screenSize.left,
         width: screenSize.width,
         height: screenSize.height,
         transform: screenSize.transform,
+        zIndex: app.zIndex,
       }}
     >
       <WindowHeader
-        appId={appId}
-        title={title}
+        {...app}
         fullScreen={screenSize.fullScreen}
         handleFullScreen={handleFullScreen}
       />
 
-      <div className="window-body overflow-y-auto">
-        <AppRenderer appId={appId} />
+      <div className="window-body h-full overflow-y-auto">
+        <AppRenderer appId={app.appId} />
       </div>
     </div>
   );
