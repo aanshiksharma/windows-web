@@ -7,10 +7,8 @@ import {
 } from "react-bootstrap-icons";
 import "./startmenu.css";
 
-// pinnedApps = [...app]
-// app = {icon: "/icons/icon.png", label: "Example"}
 function StartMenu({ visible, handleStartMenu }) {
-  const pinnedApps = []; // { appId, title, icon, bootstrapIcon }
+  const pinnedApps = []; // array of appIds
 
   return (
     <>
@@ -74,7 +72,7 @@ function StartMenu({ visible, handleStartMenu }) {
             <div className="profile rounded-full">
               <Person size={24} color="#e6e6e6" />
             </div>
-            <span className="label text-sm">User</span>
+            <span className="label text-sm">User's Name</span>
           </button>
           <div className="buttons">
             <button type="button" className="btn rounded-md">

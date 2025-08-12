@@ -1,25 +1,27 @@
 // System Apps
 import ThisPC from "./systemApps/ThisPC";
+import Explorer from "./systemApps/Explorer";
 import RecycleBin from "./systemApps/RecycleBin";
+import ReadmeApp from "./systemApps/ReadmeApp";
 
-// Native Apps
-import CalculatorApp from "./nativeApps/CalculatorApp";
-import SettingsApp from "./nativeApps/SettingsApp";
-import MicrosoftStoreApp from "./nativeApps/MicrosoftStoreApp";
-
-// Admin Apps
-import ReadmeApp from "./adminApps/ReadmeApp";
+// Default Apps
+import CalculatorApp from "./defaultApps/CalculatorApp";
+import SettingsApp from "./defaultApps/SettingsApp";
+import MicrosoftStoreApp from "./defaultApps/MicrosoftStoreApp";
 
 function AppRenderer({ appId }) {
   switch (appId) {
     // System Apps
-    case "thispc":
+    case "this-pc":
       return <ThisPC />;
 
-    case "recycleBin":
+    case "explorer":
+      return <Explorer />;
+
+    case "recycle-bin":
       return <RecycleBin />;
 
-    // Native Apps
+    // Default Apps
     case "calculator":
       return <CalculatorApp />;
 
@@ -29,7 +31,7 @@ function AppRenderer({ appId }) {
     case "microsoftStore":
       return <MicrosoftStoreApp />;
 
-    // Admin Apps
+    // System Admin App
     case "readme":
       return <ReadmeApp />;
 

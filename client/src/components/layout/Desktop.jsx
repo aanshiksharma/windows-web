@@ -3,21 +3,24 @@ import { useEffect, useState } from "react";
 import "./desktop.css";
 
 // Components
-import TaskBar from "./taskbar/TaskBar";
+import TaskBar from "./TaskBar";
 import AppIcon from "../ui/AppIcon";
 import WindowManager from "../windows/WindowManager";
 
 // States and Redux
-import { useDispatch } from "react-redux";
-import { openWindow } from "../../state/slices/windowSlice";
-
-import apps from "../../state/json/apps.json";
+import { useDispatch, useSelector } from "react-redux";
+import { unFocusAllApps } from "../../state/slices/taskbarSlice";
 
 // Animations
 import gsap from "gsap";
+import { unFocusAllWindows } from "../../state/slices/windowSlice";
 
 function Desktop() {
   const [wallpaper, setWallpaper] = useState("/wallpapers/default.jpg");
+  const dispatch = useDispatch();
+
+  const apps = useSelector((state) => state.apps.apps);
+  const desktopApps = useSelector((state) => state.desktop.desktopApps);
 
   useEffect(() => {
     gsap.to(".starting-animation-overlay", {
@@ -39,16 +42,19 @@ function Desktop() {
         />
       </div>
 
-      <div className="desktop-icons-container px-2 pt-2 pb-12 gap-y-3 gap-x-1 h-screen w-fit flex flex-col flex-wrap items-center justify-start">
-        {apps.systemApps.map((app) => (
-          <AppIcon key={app.id} {...app} />
-        ))}
-        {apps.nativeApps.map((app) => (
-          <AppIcon key={app.id} {...app} />
-        ))}
-        {apps.adminApps.map((app) => (
-          <AppIcon key={app.id} {...app} />
-        ))}
+      <div
+        className="container w-screen h-screen"
+        onClick={() => {
+          dispatch(unFocusAllApps());
+          dispatch(unFocusAllWindows());
+        }}
+      >
+        <div className="desktop-icons-container px-2 pt-2 pb-12 gap-y-3 gap-x-1 h-full w-fit flex flex-col flex-wrap items-center justify-start">
+          {apps.map((app) => {
+            if (desktopApps.includes(app.appId))
+              return <AppIcon key={app.appId} {...app} />;
+          })}
+        </div>
       </div>
 
       <TaskBar />

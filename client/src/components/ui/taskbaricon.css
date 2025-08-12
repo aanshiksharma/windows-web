@@ -17,6 +17,7 @@
       height: 3px;
       border-radius: 3px;
       background: white;
+      transition: all 400ms ease;
 
       position: absolute;
       bottom: 0;

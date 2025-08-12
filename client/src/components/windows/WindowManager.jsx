@@ -7,7 +7,7 @@ function WindowManager() {
   return (
     <>
       {openWindows.map((window) => {
-        return <Window key={window.id} {...window} />;
+        return <Window key={window.windowId} {...window} />;
       })}
     </>
   );

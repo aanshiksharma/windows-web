@@ -1,83 +1,85 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
-  pinnedApps: [
-    {
-      id: uuidv4(),
-      appId: "explorer",
-      icon: "/icons/explorer.png",
-      bootstrapIcon: null,
-      isFocused: false,
-      isOpen: false,
-    },
-  ],
-};
-
-const unFocus = (apps) => {
-  apps.forEach((app) => {
-    app.isFocused = false;
-  });
+  pinnedApps: ["explorer", "readme"], // array of appIds
+  openApps: [], // { appId, openWindowsCount, isFocused }
 };
 
 const taskbarSlice = createSlice({
   name: "taskbar",
-  initialState, // [ { id, appId, icon, bootstrapIcon, isFocused, isOpen } ]
+  initialState,
   reducers: {
-    addToPinnedApps: (state, action) => {
-      const newApp = {
-        id: uuidv4(),
-        appId: action.payload.id,
-        ...action.payload,
-      };
-
-      unFocus(state.pinnedApps);
-
-      state.pinnedApps.push(newApp);
+    pinApp: (state, action) => {
+      // action.payload = appId
+      state.pinnedApps.push(action.payload);
     },
 
-    removeFromPinnedApps: (state, action) => {
-      state.pinnedApps = state.pinnedApps.filter(
-        (pinnedApp) => pinnedApp.appId !== action.payload
-      );
+    unpinApp: (state, action) => {
+      // action.payload = appId
+      state.pinnedApps.filter((app) => app !== action.payload);
     },
 
-    setTaskbarAppFocus: (state, action) => {
-      unFocus(state.pinnedApps);
+    openApp: (state, action) => {
+      // action.payload = appId
+      const app = state.openApps.find((app) => app.appId === action.payload);
 
-      const app = state.pinnedApps.find(
-        (pinnedApp) => pinnedApp.appId === action.payload
-      );
+      // Unfocus all the apps
+      state.openApps.forEach((app) => (app.isFocused = false));
+
+      if (app) {
+        app.openWindowsCount++;
+        app.isFocused = true;
+      } else {
+        state.openApps.push({
+          appId: action.payload,
+          openWindowsCount: 1,
+          isFocused: true,
+        });
+      }
+    },
+
+    closeApp: (state, action) => {
+      // action.payload = appId
+      const app = state.openApps.find((app) => app.appId === action.payload);
+
+      app.openWindowsCount--;
+
+      if (app.openWindowsCount <= 0) {
+        state.openApps = state.openApps.filter(
+          (app) => app.appId !== action.payload
+        );
+      }
+    },
+
+    focusApp: (state, action) => {
+      const app = state.openApps.find((app) => app.appId === action.payload);
+
+      // Unfocus all the apps
+      state.openApps.forEach((app) => (app.isFocused = false));
 
       if (app) app.isFocused = true;
     },
 
-    setTaskbarAppUnFocus: (state, action) => {
-      const app = state.pinnedApps.find(
-        (pinnedApp) => pinnedApp.appId === action.payload
-      );
+    unFocusApp: (state, action) => {
+      const app = state.openApps.find((app) => app.appId === action.payload);
 
-      if (app) app.isFocused = false;
+      app.isFocused = false;
     },
 
-    setTaskbarAppOpen: (state, action) => {
-      const { appId, isOpen } = action.payload;
-
-      const app = state.pinnedApps.find(
-        (pinnedApp) => pinnedApp.appId === appId
-      );
-
-      if (app) app.isOpen = isOpen;
+    unFocusAllApps: (state) => {
+      state.openApps.forEach((app) => (app.isFocused = false));
     },
   },
 });
 
 export const {
-  addToPinnedApps,
-  removeFromPinnedApps,
-  setTaskbarAppFocus,
-  setTaskbarAppUnFocus,
-  setTaskbarAppOpen,
+  pinApp,
+  unpinApp,
+  openApp,
+  closeApp,
+  focusApp,
+  unFocusApp,
+  unFocusAllApps,
 } = taskbarSlice.actions;
 
 export default taskbarSlice.reducer;

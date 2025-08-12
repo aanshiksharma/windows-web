@@ -6,8 +6,12 @@
     background: hsl(0 0 20);
     color: hsl(0 0 90);
 
-    .btn:not(.close-button):hover {
-      background: hsl(0 0 100/0.1);
+    .btn {
+      transition: all 200ms ease;
+
+      &:not(.close-button):hover {
+        background: hsl(0 0 100/0.1);
+      }
     }
   }
 

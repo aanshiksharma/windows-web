@@ -5,7 +5,7 @@ import { Resizable } from "re-resizable";
 // Redux
 import { useSelector, useDispatch } from "react-redux";
 import { focusWindow } from "../../state/slices/windowSlice";
-import { setTaskbarAppFocus } from "../../state/slices/taskbarSlice";
+import { focusApp } from "../../state/slices/taskbarSlice";
 
 // Components
 import AppRenderer from "../apps/AppRenderer";
@@ -13,26 +13,26 @@ import WindowHeader from "./WindowHeader";
 
 import "./window.css";
 
-function Window(app) {
+function Window(window) {
   const openWindows = useSelector((state) => state.window.openWindows);
   const currentWindow = openWindows.find(
-    (window) => window.appId === app.appId
+    (win) => win.windowId === window.windowId
   );
 
   const [screenSize, setScreenSize] = useState({
     fullScreen: false,
-    top: app.position.top,
-    left: app.position.left,
-    transform: app.transform,
-    width: app.size.width,
-    height: app.size.height,
+    top: window.position.top,
+    left: window.position.left,
+    transform: window.transform,
+    width: window.size.width,
+    height: window.size.height,
   });
 
   const dispatch = useDispatch();
 
   const handleFocus = () => {
-    dispatch(focusWindow(app.appId));
-    dispatch(setTaskbarAppFocus(app.appId));
+    dispatch(focusWindow(window.windowId));
+    dispatch(focusApp(window.appId));
   };
 
   const handleFullScreen = () => {
@@ -40,11 +40,11 @@ function Window(app) {
       if (currSize.fullScreen)
         return {
           fullScreen: false,
-          top: app.position.top,
-          left: app.position.left,
-          transform: app.transform,
-          width: app.size.width,
-          height: app.size.height,
+          top: window.position.top,
+          left: window.position.left,
+          transform: window.transform,
+          width: window.size.width,
+          height: window.size.height,
         };
       else
         return {
@@ -70,17 +70,17 @@ function Window(app) {
         width: screenSize.width,
         height: screenSize.height,
         transform: screenSize.transform,
-        zIndex: app.zIndex,
+        zIndex: window.zIndex,
       }}
     >
       <WindowHeader
-        {...app}
+        {...window}
         fullScreen={screenSize.fullScreen}
         handleFullScreen={handleFullScreen}
       />
 
       <div className="window-body h-full overflow-y-auto">
-        <AppRenderer appId={app.appId} />
+        <AppRenderer appId={window.appId} />
       </div>
     </div>
   );

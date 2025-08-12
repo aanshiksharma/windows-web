@@ -1,10 +1,7 @@
 // Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeWindow, minimizeWindow } from "../../state/slices/windowSlice";
-import {
-  removeFromPinnedApps,
-  setTaskbarAppUnFocus,
-} from "../../state/slices/taskbarSlice";
+import { closeApp, unFocusApp } from "../../state/slices/taskbarSlice";
 
 // Bootstrap Icons
 import BootstrapIcon from "../ui/BootstrapIcon";
@@ -15,37 +12,38 @@ import {
   WindowFullscreen,
 } from "react-bootstrap-icons";
 
-function WindowHeader({
-  appId,
-  title,
-  fullScreen,
-  handleFullScreen,
-  icon,
-  bootstrapIcon,
-}) {
+function WindowHeader(window) {
   const dispatch = useDispatch();
 
+  const apps = useSelector((state) => state.apps.apps);
+  const app = apps.find((application) => {
+    return application.appId === window.appId;
+  });
+  const icon = { bootstrapIcon: app.bootstrapIcon, icon: app.icon };
+
   const handleMinimize = () => {
-    dispatch(minimizeWindow(appId));
-    dispatch(setTaskbarAppUnFocus(appId));
+    setTimeout(() => {
+      dispatch(unFocusApp(window.appId));
+      dispatch(minimizeWindow(window.windowId));
+    }, 10);
   };
 
   const handleClose = () => {
-    dispatch(removeFromPinnedApps(appId));
-    dispatch(closeWindow(appId));
+    dispatch(closeApp(window.appId));
+    dispatch(closeWindow(window.windowId));
   };
 
   return (
     <div className="window-header flex items-center justify-between">
       <div className="app-info flex items-center gap-2 px-4">
-        {icon ? (
+        {icon.icon ? (
           <div className="icon-container w-4 h-4 pointer-events-none">
-            <img src={icon} alt="" />
+            <img src={icon.icon} alt="" />
           </div>
         ) : (
-          <BootstrapIcon icon={bootstrapIcon} />
+          <BootstrapIcon icon={icon.bootstrapIcon} />
         )}
-        <span className="text-sm">{title}</span>
+        <span className="text-sm">{window.title}</span>
       </div>
 
       <div className="buttons flex items-stretch">
@@ -57,11 +55,11 @@ function WindowHeader({
           <DashLg color="#e6e6e6" />
         </button>
 
-        {fullScreen ? (
+        {window.fullScreen ? (
           <button
             type="button"
             className="btn restore-button px-4 py-3"
-            onClick={handleFullScreen}
+            onClick={window.handleFullScreen}
           >
             <WindowStack color="#e6e6e6" />
           </button>
@@ -69,7 +67,7 @@ function WindowHeader({
           <button
             type="button"
             className="btn maximize-button px-4 py-3"
-            onClick={handleFullScreen}
+            onClick={window.handleFullScreen}
           >
             <WindowFullscreen color="#e6e6e6" />
           </button>

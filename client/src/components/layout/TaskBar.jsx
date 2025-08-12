@@ -6,9 +6,9 @@ import "./taskbar.css";
 import { useSelector } from "react-redux";
 
 // Components
-import StartMenu from "../StartMenu";
-import TaskbarClock from "../../ui/TaskbarClock";
-import TaskbarIcon from "../../ui/TaskbarIcon";
+import StartMenu from "./StartMenu";
+import TaskbarClock from "../ui/TaskbarClock";
+import TaskbarIcon from "../ui/TaskbarIcon";
 
 import { Collection, Microsoft, Search } from "react-bootstrap-icons";
 
@@ -17,6 +17,7 @@ function TaskBar() {
 
   // States from Redux
   const pinnedApps = useSelector((state) => state.taskbar.pinnedApps);
+  const openApps = useSelector((state) => state.taskbar.openApps);
 
   const handleStartMenu = () => {
     setStartMenuVisibility(!startMenuVisibility);
@@ -48,8 +49,24 @@ function TaskBar() {
               }
               onClick={handleStartMenu}
             >
-              <div className="start-menu-button-container flex items-center justify-center rounded-[1.5px] overflow-hidden">
-                <Microsoft size={24} />
+              <div className="start-button-container flex items-center justify-center rounded-[1.5px] overflow-hidden">
+                {/* Linear Gradient from #76e7f6 in the top-left to #15a1fd in the bottom right */}
+                <svg width="0" height="0">
+                  <linearGradient
+                    id="startButtonGradient"
+                    x1="0%"
+                    y1="0%"
+                    x2="100%"
+                    y2="100%"
+                  >
+                    <stop offset="0%" stopColor="#76e7f6" />
+                    <stop offset="100%" stopColor="#15a1fd" />
+                  </linearGradient>
+                </svg>
+                <Microsoft
+                  size={24}
+                  style={{ fill: "url(#startButtonGradient)" }}
+                />
               </div>
             </button>
 
@@ -70,15 +87,20 @@ function TaskBar() {
               </div>
             </div>
 
+            {/* Multiple Windows Button */}
             <button type="button" className="btn rounded-sm">
               <Collection size={24} />
             </button>
           </div>
 
           <div className="pinned-icons flex items-center gap-1">
-            {pinnedApps.map((pinnedApp) => (
-              <TaskbarIcon key={pinnedApp.id} {...pinnedApp} />
+            {pinnedApps.map((appId) => (
+              <TaskbarIcon key={appId} appId={appId} />
             ))}
+            {openApps.map((app) => {
+              if (pinnedApps.includes(app.appId)) return;
+              return <TaskbarIcon key={app.appId} appId={app.appId} />;
+            })}
           </div>
         </div>
 

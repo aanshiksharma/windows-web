@@ -2,21 +2,29 @@ import "./appicon.css";
 
 import BootstrapIcon from "./BootstrapIcon";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openWindow } from "../../state/slices/windowSlice";
-import { addToPinnedApps } from "../../state/slices/taskbarSlice";
+import { openApp } from "../../state/slices/taskbarSlice";
 
 function AppIcon(app) {
   const dispatch = useDispatch();
+  const openApps = useSelector((state) => state.taskbar.openApps);
 
-  const handleOpenWindow = (app) => {
-    dispatch(
-      openWindow({
-        ...app,
-      })
-    );
+  const handleOpenWindow = () => {
+    const openedApp = openApps.find((openApp) => openApp.appId === app.appId);
 
-    dispatch(addToPinnedApps({ ...app, isFocused: true, isOpen: true }));
+    if (openedApp) {
+      if (openedApp.openWindowsCount <= 1 && !app.singleInstance) {
+        dispatch(openApp(app.appId));
+        dispatch(openWindow({ ...app }));
+      } else {
+        // this alert will be an error notification and will pop up in the bottom right corner
+        alert("Only one instance of this window can run at a time!");
+      }
+    } else {
+      dispatch(openApp(app.appId));
+      dispatch(openWindow({ ...app }));
+    }
   };
 
   return (

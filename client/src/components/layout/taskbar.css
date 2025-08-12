@@ -8,13 +8,15 @@
   color: hsl(0 0 95);
   backdrop-filter: blur(100px);
 
+  /* Linear Gradient from #76e7f6 in the top-left to #15a1fd in the bottom right */
+
   .btn {
     padding: 0.5rem;
     transition: all 200ms ease;
 
     svg,
     img,
-    .start-menu-button-container {
+    .start-button-container {
       transition: all 200ms ease;
     }
 
@@ -25,7 +27,7 @@
     &:active {
       & > svg,
       img,
-      .start-menu-button-container {
+      .start-button-container {
         scale: 0.8;
       }
     }
