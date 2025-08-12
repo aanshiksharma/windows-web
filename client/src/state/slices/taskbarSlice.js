@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  pinnedApps: ["explorer", "readme"], // array of appIds
   openApps: [], // { appId, openWindowsCount, isFocused }
 };
 
@@ -9,16 +8,6 @@ const taskbarSlice = createSlice({
   name: "taskbar",
   initialState,
   reducers: {
-    pinApp: (state, action) => {
-      // action.payload = appId
-      state.pinnedApps.push(action.payload);
-    },
-
-    unpinApp: (state, action) => {
-      // action.payload = appId
-      state.pinnedApps.filter((app) => app !== action.payload);
-    },
-
     openApp: (state, action) => {
       // action.payload = appId
       const app = state.openApps.find((app) => app.appId === action.payload);
@@ -72,14 +61,7 @@ const taskbarSlice = createSlice({
   },
 });
 
-export const {
-  pinApp,
-  unpinApp,
-  openApp,
-  closeApp,
-  focusApp,
-  unFocusApp,
-  unFocusAllApps,
-} = taskbarSlice.actions;
+export const { openApp, closeApp, focusApp, unFocusApp, unFocusAllApps } =
+  taskbarSlice.actions;
 
 export default taskbarSlice.reducer;

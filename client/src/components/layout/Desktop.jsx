@@ -20,7 +20,9 @@ function Desktop() {
   const dispatch = useDispatch();
 
   const apps = useSelector((state) => state.apps.apps);
-  const desktopApps = useSelector((state) => state.desktop.desktopApps);
+  const desktopApps = useSelector(
+    (state) => state.users.currentUser.layout.desktopApps
+  );
 
   useEffect(() => {
     gsap.to(".starting-animation-overlay", {

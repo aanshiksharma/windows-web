@@ -14,7 +14,7 @@ function AppIcon(app) {
     const openedApp = openApps.find((openApp) => openApp.appId === app.appId);
 
     if (openedApp) {
-      if (openedApp.openWindowsCount <= 1 && !app.singleInstance) {
+      if (openedApp.openWindowsCount <= 1 && app.allowMultipleInstances) {
         dispatch(openApp(app.appId));
         dispatch(openWindow({ ...app }));
       } else {

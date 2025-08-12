@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 import gsap from "gsap";
 
@@ -11,7 +12,10 @@ function LockScreen({ settings }) {
 
   const navigate = useNavigate();
 
-  const wallpaper = settings.wallpaper || "/wallpapers/default.jpg";
+  const currentUser = useSelector((state) => state.users.currentUser);
+
+  let wallpaper = "/wallpapers/default.jpg";
+  if (currentUser) wallpaper = currentUser.preferences.lockScreenWallpaper;
 
   useEffect(() => {
     lockScreenRef.current?.focus(); // focus on the #lock-screen div on mount to use keydown events with more control

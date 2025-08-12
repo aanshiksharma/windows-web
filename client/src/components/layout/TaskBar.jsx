@@ -16,7 +16,9 @@ function TaskBar() {
   const [startMenuVisibility, setStartMenuVisibility] = useState(false);
 
   // States from Redux
-  const pinnedApps = useSelector((state) => state.taskbar.pinnedApps);
+  const pinnedApps = useSelector(
+    (state) => state.users.currentUser.layout.taskbarPinnedApps
+  );
   const openApps = useSelector((state) => state.taskbar.openApps);
 
   const handleStartMenu = () => {

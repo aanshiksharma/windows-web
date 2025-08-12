@@ -2,15 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
 import gsap from "gsap";
 
-import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { signupUser } from "../../state/slices/usersSlice";
 
 function SignupForm() {
   const [password, setPassword] = useState("");
   const signupErrorMessageRef = useRef();
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.users.allUsers);
 
   useEffect(() => {
     gsap.to(".wrapper", {
@@ -38,22 +40,29 @@ function SignupForm() {
 
   const handleSignup = (form) => {
     let user = {
-      id: uuidv4(),
       name: form.signupName.value,
       username: form.signupUsername.value,
       password: form.signupPassword.value,
     };
 
-    for (let i = 0; i < users.length; i++) {
-      if (users[i].username === form.signupUsername.value) {
-        signupErrorMessageRef.current.classList.remove("hidden");
+    // for (let i = 0; i < users.length; i++) {
+    //   if (users[i].username === form.signupUsername.value) {
+    //     signupErrorMessageRef.current.classList.remove("hidden");
 
-        return;
-      }
+    //     return;
+    //   }
+    // }
+
+    const duplicateUser = users.find(
+      (user) => user.username === form.signupUsername.value
+    );
+
+    if (duplicateUser) {
+      signupErrorMessageRef.current.classList.remove("hidden");
+      return;
     }
 
-    users.push(user);
-    localStorage.setItem("users", JSON.stringify(users));
+    dispatch(signupUser(user));
 
     // GSAP animation before naviagating to desktop come here
     gsap.to(".wrapper", {

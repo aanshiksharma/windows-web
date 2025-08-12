@@ -2,12 +2,16 @@ import { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Person, PersonCircle } from "react-bootstrap-icons";
 import gsap from "gsap";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../state/slices/usersSlice";
 
 function Form({ user }) {
   const [password, setPassword] = useState("");
   const [isWrongPassword, setIsWrongPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     gsap.to(".wrapper", {
@@ -41,7 +45,10 @@ function Form({ user }) {
         opacity: 0,
         y: -50,
         duration: 0.5,
-        onComplete: () => navigate("/desktop"),
+        onComplete: () => {
+          dispatch(loginUser(user.username));
+          navigate("/desktop");
+        },
       });
     } else {
       setPassword("");
@@ -110,7 +117,7 @@ function LoginForm() {
 
   const navigate = useNavigate();
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const users = useSelector((state) => state.users.allUsers);
 
   const handleLoginForm = (user) => {
     gsap.to(".wrapper", {
@@ -136,7 +143,7 @@ function LoginForm() {
         <Form user={selectedUser} />
       ) : (
         <>
-          {users.length !== 1 && users.length !== 0 && (
+          {users.length > 1 && (
             <p className="font-semibold text-2xl">Choose an Account.</p>
           )}
 
@@ -163,11 +170,11 @@ function LoginForm() {
               <Form user={users[0]} />
             ) : (
               <div className="user-profile-container flex items-center gap-2">
-                {users.map((user, index) => (
+                {users.map((user) => (
                   <button
                     key={user.id}
                     className="user-profile flex flex-col items-center min-w-25 rounded-md gap-2 px-2 py-3"
-                    onClick={() => handleLoginForm(users[index])}
+                    onClick={() => handleLoginForm(user)}
                   >
                     <PersonCircle size={48} />
 
