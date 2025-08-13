@@ -4,6 +4,7 @@ import appsReducer from "./slices/appsSlice";
 import windowReducer from "./slices/windowSlice";
 import taskbarReducer from "./slices/taskbarSlice";
 import usersReducer from "./slices/usersSlice";
+import notificationsReducer from "./slices/notificationsSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     window: windowReducer,
     taskbar: taskbarReducer,
     users: usersReducer,
+    notifications: notificationsReducer,
   },
 });
 

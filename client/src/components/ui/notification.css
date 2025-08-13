@@ -1,0 +1,8 @@
+.notification-popup {
+  background: hsl(0 0 100/0.1);
+  backdrop-filter: blur(60px);
+
+  .notification-header {
+    border-color: hsl(0 0 100/0.25);
+  }
+}

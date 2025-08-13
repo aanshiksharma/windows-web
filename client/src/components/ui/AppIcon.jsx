@@ -5,6 +5,7 @@ import BootstrapIcon from "./BootstrapIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { openWindow } from "../../state/slices/windowSlice";
 import { openApp } from "../../state/slices/taskbarSlice";
+import { addNotification } from "../../state/slices/notificationsSlice";
 
 function AppIcon(app) {
   const dispatch = useDispatch();
@@ -18,8 +19,13 @@ function AppIcon(app) {
         dispatch(openApp(app.appId));
         dispatch(openWindow({ ...app }));
       } else {
-        // this alert will be an error notification and will pop up in the bottom right corner
-        alert("Only one instance of this window can run at a time!");
+        dispatch(
+          addNotification({
+            type: "warning",
+            head: "Multiple instances detected",
+            body: "Only one instance of this app can run at a time!",
+          })
+        );
       }
     } else {
       dispatch(openApp(app.appId));
