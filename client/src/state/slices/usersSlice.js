@@ -66,7 +66,7 @@ const usersSlice = createSlice({
       }
     },
 
-    guestLogin: (state, action) => {
+    guestLogin: (state) => {
       const newGuest = {
         id: uuidv4(),
         name: "Guest",

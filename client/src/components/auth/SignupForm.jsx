@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import gsap from "gsap";
 
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser } from "../../state/slices/usersSlice";
+import { signupUser, guestLogin } from "../../state/slices/usersSlice";
 
 function SignupForm() {
   const [password, setPassword] = useState("");
@@ -45,14 +45,6 @@ function SignupForm() {
       password: form.signupPassword.value,
     };
 
-    // for (let i = 0; i < users.length; i++) {
-    //   if (users[i].username === form.signupUsername.value) {
-    //     signupErrorMessageRef.current.classList.remove("hidden");
-
-    //     return;
-    //   }
-    // }
-
     const duplicateUser = users.find(
       (user) => user.username === form.signupUsername.value
     );
@@ -73,7 +65,17 @@ function SignupForm() {
     });
   };
 
-  const handleGuestLogin = () => {};
+  const handleGuestLogin = () => {
+    dispatch(guestLogin());
+
+    // GSAP animation before naviagating to desktop come here
+    gsap.to(".wrapper", {
+      opacity: 0,
+      y: -100,
+      duration: 1,
+      onComplete: navigate("/desktop"),
+    });
+  };
 
   return (
     <div id="signup-page" className="flex items-center justify-center h-screen">
@@ -145,13 +147,14 @@ function SignupForm() {
 
           <span>or</span>
 
-          <a
-            href="/desktop"
-            className="text-sm font-semibold"
+          <button
+            type="button"
+            id="guest-login-link"
+            className="text-sm font-semibold cursor-pointer"
             onClick={handleGuestLogin}
           >
             Login as Guest
-          </a>
+          </button>
         </div>
       </div>
     </div>

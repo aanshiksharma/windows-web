@@ -1,6 +1,6 @@
 .window {
   border: 1px solid hsl(0 0 90/0.2);
-  transition: all 200ms ease;
+  transition: all 300ms ease;
 
   .window-header {
     background: hsl(0 0 20);

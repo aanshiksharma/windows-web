@@ -1,3 +1,5 @@
+import gsap from "gsap";
+
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { closeWindow, minimizeWindow } from "../../state/slices/windowSlice";
@@ -12,25 +14,45 @@ import {
   WindowFullscreen,
 } from "react-bootstrap-icons";
 
-function WindowHeader(window) {
+function WindowHeader({
+  windowId,
+  appId,
+  title,
+  fullScreen,
+  handleFullScreen,
+  windowRef,
+}) {
   const dispatch = useDispatch();
 
   const apps = useSelector((state) => state.apps.apps);
   const app = apps.find((application) => {
-    return application.appId === window.appId;
+    return application.appId === appId;
   });
   const icon = { bootstrapIcon: app.bootstrapIcon, icon: app.icon };
 
+  const getRndElement = () => {
+    const inst = windowRef?.current;
+    if (!inst) return null;
+
+    // react-rnd >= 10 exposes the actual node:
+    if (typeof inst.getSelfElement === "function") {
+      return inst.getSelfElement();
+    }
+
+    // Fallbacks for older versions (best-effort)
+    return inst.resizable?.resizable || inst.dragElement || null;
+  };
+
   const handleMinimize = () => {
     setTimeout(() => {
-      dispatch(unFocusApp(window.appId));
-      dispatch(minimizeWindow(window.windowId));
+      dispatch(unFocusApp(appId));
+      dispatch(minimizeWindow(windowId));
     }, 10);
   };
 
   const handleClose = () => {
-    dispatch(closeApp(window.appId));
-    dispatch(closeWindow(window.windowId));
+    dispatch(closeApp(appId));
+    dispatch(closeWindow(windowId));
   };
 
   return (
@@ -43,7 +65,7 @@ function WindowHeader(window) {
         ) : (
           <BootstrapIcon icon={icon.bootstrapIcon} />
         )}
-        <span className="text-sm">{window.title}</span>
+        <span className="text-sm">{title}</span>
       </div>
 
       <div className="buttons flex items-stretch">
@@ -55,11 +77,11 @@ function WindowHeader(window) {
           <DashLg color="#e6e6e6" />
         </button>
 
-        {window.fullScreen ? (
+        {fullScreen ? (
           <button
             type="button"
             className="btn restore-button px-4 py-3"
-            onClick={window.handleFullScreen}
+            onClick={handleFullScreen}
           >
             <WindowStack color="#e6e6e6" />
           </button>
@@ -67,7 +89,7 @@ function WindowHeader(window) {
           <button
             type="button"
             className="btn maximize-button px-4 py-3"
-            onClick={window.handleFullScreen}
+            onClick={handleFullScreen}
           >
             <WindowFullscreen color="#e6e6e6" />
           </button>
