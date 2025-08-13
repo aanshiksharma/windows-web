@@ -24,17 +24,22 @@ function Icon(app) {
     app.handleStartMenu();
     const openedApp = openApps.find((openApp) => openApp.appId === app.appId);
     if (openedApp) {
-      if (openedApp.openWindowsCount <= 1 && app.allowMultipleInstances) {
+      if (app.allowMultipleInstances) {
         dispatch(openApp(app.appId));
-        dispatch(openWindow({ appId: app.appId, title: app.title }));
+        dispatch(openWindow({ ...app }));
       } else {
-        dispatch(
-          addNotification({
-            type: "warning",
-            head: "Multiple instances detected",
-            body: "Only one instance of this app can run at a time!",
-          })
-        );
+        if (openedApp.openWindowsCount === 0) {
+          dispatch(openApp(app.appId));
+          dispatch(openWindow({ ...app }));
+        } else {
+          dispatch(
+            addNotification({
+              type: "warning",
+              head: "Multiple instances detected",
+              body: "Only one instance of this app can run at a time!",
+            })
+          );
+        }
       }
     } else {
       dispatch(openApp(app.appId));

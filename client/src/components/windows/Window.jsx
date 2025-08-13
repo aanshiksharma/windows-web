@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Draggable from "react-draggable";
-import { Resizable } from "re-resizable";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
