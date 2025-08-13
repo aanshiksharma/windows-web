@@ -85,18 +85,13 @@ function StartMenu({ visible, handleStartMenu }) {
     handleStartMenu();
     const openedApp = openApps.find((openApp) => openApp.appId === appId);
     if (openedApp) {
-      if (openedApp.openWindowsCount <= 1 && openedApp.allowMultipleInstances) {
-        dispatch(openApp(appId));
-        dispatch(openWindow({ appId: appId, title: title }));
-      } else {
-        dispatch(
-          addNotification({
-            type: "warning",
-            head: "Multiple instances detected",
-            body: "Only one instance of this app can run at a time!",
-          })
-        );
-      }
+      dispatch(
+        addNotification({
+          type: "warning",
+          head: "Multiple instances detected",
+          body: "Only one instance of this app can run at a time!",
+        })
+      );
     } else {
       dispatch(openApp(appId));
       dispatch(openWindow({ appId: appId, title: title }));
