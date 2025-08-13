@@ -79,17 +79,13 @@ body {
     }
   }
 
-  a {
-    outline: 0;
-    text-decoration: none;
+  #guest-login-link {
     transition: all 200ms ease;
     color: hsl(207 100 50);
 
+    &:focus,
     &:hover {
-      color: hsl(207 100 70);
-    }
-
-    &:focus {
+      color: hsl(207 100 60);
       text-decoration: underline;
     }
   }
