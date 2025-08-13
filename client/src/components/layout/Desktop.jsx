@@ -6,6 +6,7 @@ import "./desktop.css";
 import TaskBar from "./TaskBar";
 import AppIcon from "../ui/AppIcon";
 import WindowManager from "../windows/WindowManager";
+import NotificationManager from "./NotificationManager";
 
 // States and Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,7 @@ import { unFocusAllWindows } from "../../state/slices/windowSlice";
 
 function Desktop() {
   const [wallpaper, setWallpaper] = useState("/wallpapers/default.jpg");
+
   const dispatch = useDispatch();
 
   const apps = useSelector((state) => state.apps.apps);
@@ -45,12 +47,15 @@ function Desktop() {
       </div>
 
       <div
-        className="container w-screen h-screen"
+        className="desktop-underlay w-screen h-screen" // desktop-underlay is a container for the desktop icons
         onClick={() => {
           dispatch(unFocusAllApps());
           dispatch(unFocusAllWindows());
         }}
       >
+        {/* ============= */}
+        {/* DESKTOP ICONS */}
+        {/* ============= */}
         <div className="desktop-icons-container px-2 pt-2 pb-12 gap-y-3 gap-x-1 h-full w-fit flex flex-col flex-wrap items-center justify-start">
           {apps.map((app) => {
             if (desktopApps.includes(app.appId))
@@ -60,6 +65,7 @@ function Desktop() {
       </div>
 
       <TaskBar />
+      <NotificationManager />
       <WindowManager />
     </>
   );

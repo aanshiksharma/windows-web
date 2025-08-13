@@ -13,6 +13,7 @@ import BootstrapIcon from "../ui/BootstrapIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { openWindow } from "../../state/slices/windowSlice";
 import { openApp } from "../../state/slices/taskbarSlice";
+import { addNotification } from "../../state/slices/notificationsSlice";
 
 // START MENU ICON COMPONENT
 function Icon(app) {
@@ -27,8 +28,13 @@ function Icon(app) {
         dispatch(openApp(app.appId));
         dispatch(openWindow({ appId: app.appId, title: app.title }));
       } else {
-        // this alert will be an error notification and will pop up in the bottom right corner
-        alert("Only one instance of this window can run at a time!");
+        dispatch(
+          addNotification({
+            type: "warning",
+            head: "Multiple instances detected",
+            body: "Only one instance of this app can run at a time!",
+          })
+        );
       }
     } else {
       dispatch(openApp(app.appId));
@@ -78,8 +84,13 @@ function StartMenu({ visible, handleStartMenu }) {
         dispatch(openApp(appId));
         dispatch(openWindow({ appId: appId, title: title }));
       } else {
-        // this alert will be an error notification and will pop up in the bottom right corner
-        alert("Only one instance of this window can run at a time!");
+        dispatch(
+          addNotification({
+            type: "warning",
+            head: "Multiple instances detected",
+            body: "Only one instance of this app can run at a time!",
+          })
+        );
       }
     } else {
       dispatch(openApp(appId));
