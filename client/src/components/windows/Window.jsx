@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Rnd } from "react-rnd";
+import gsap from "gsap";
 
 // Redux
 import { useSelector, useDispatch } from "react-redux";
@@ -11,76 +13,122 @@ import WindowHeader from "./WindowHeader";
 
 import "./window.css";
 
-function Window(window) {
+function Window({ windowId, appId, title, position, size, zIndex }) {
   const openWindows = useSelector((state) => state.window.openWindows);
-  const currentWindow = openWindows.find(
-    (win) => win.windowId === window.windowId
-  );
+  const currentWindow = openWindows.find((win) => win.windowId === windowId);
 
   const [screenSize, setScreenSize] = useState({
     fullScreen: false,
-    top: window.position.top,
-    left: window.position.left,
-    transform: window.transform,
-    width: window.size.width,
-    height: window.size.height,
+    x: position.x,
+    y: position.y,
+    width: size.width,
+    height: size.height,
   });
+
+  const rndRef = useRef(null);
+  const lastScreenSize = useRef(screenSize);
 
   const dispatch = useDispatch();
 
   const handleFocus = () => {
-    dispatch(focusWindow(window.windowId));
-    dispatch(focusApp(window.appId));
+    dispatch(focusWindow(windowId));
+    dispatch(focusApp(appId));
   };
 
   const handleFullScreen = () => {
-    setScreenSize((currSize) => {
-      if (currSize.fullScreen)
-        return {
-          fullScreen: false,
-          top: window.position.top,
-          left: window.position.left,
-          transform: window.transform,
-          width: window.size.width,
-          height: window.size.height,
-        };
-      else
-        return {
-          fullScreen: true,
-          top: "0",
-          left: "0",
-          transform: "translate(0, 0)",
-          width: "100vw",
-          height: "calc(100vh - 3rem)",
-        };
-    });
+    if (!screenSize.fullScreen) {
+      lastScreenSize.current = { ...screenSize };
+
+      gsap.to(screenSize, {
+        duration: 0.25,
+        x: 0,
+        y: 0,
+        width: window.innerWidth,
+        height: window.innerHeight - 48,
+        onUpdate: () => {
+          // Force React to re-render with updated state
+          setScreenSize({ ...screenSize, fullScreen: true });
+        },
+        onComplete: () => {
+          setScreenSize((s) => ({ ...s, fullScreen: true }));
+        },
+      });
+    } else {
+      gsap.to(screenSize, {
+        duration: 0.25,
+        ...lastScreenSize.current,
+        onUpdate: () => {
+          setScreenSize({ ...screenSize, fullScreen: false });
+        },
+        onComplete: () => {
+          setScreenSize((s) => ({ ...s, fullScreen: false }));
+        },
+      });
+    }
   };
 
   return (
-    <div
-      className={`window shadow-2xs min-w-[500px] min-h-[400px] absolute overflow-hidden flex flex-col ${
-        !screenSize.fullScreen && "rounded-lg"
-      } ${currentWindow.isMinimized && "hidden"}`}
-      onClick={handleFocus}
+    <Rnd
+      ref={rndRef}
+      // Position and Size Edge Cases (Bounds)
+
+      bounds={false}
+      minHeight={100}
+      minWidth={500}
+      // Size and Position
+
+      size={{ width: screenSize.width, height: screenSize.height }}
+      position={{ x: screenSize.x, y: screenSize.y }}
+      // Part of the element that controls dragging
+
+      dragHandleClassName="window-header"
+      // Drag Handler
+
+      onDragStop={(e, d) => {
+        setScreenSize((s) => ({ ...s, x: d.x, y: Math.max(0, d.y) }));
+      }}
+      // Size Handler
+
+      onResizeStop={(e, direction, ref, delta, pos) => {
+        setScreenSize((s) => ({
+          ...s,
+          width: parseFloat(ref.style.width),
+          height: parseFloat(ref.style.height),
+          ...pos,
+        }));
+      }}
+      // Enabling of Functionalities based on fullscreen mode
+
+      disableDragging={screenSize.fullScreen}
+      enableResizing={!screenSize.fullScreen}
+      // Controlling zIndex manually for handling focus
+
       style={{
-        top: screenSize.top,
-        left: screenSize.left,
-        width: screenSize.width,
-        height: screenSize.height,
-        transform: screenSize.transform,
-        zIndex: window.zIndex,
+        zIndex: zIndex,
       }}
     >
-      <WindowHeader
-        {...window}
-        fullScreen={screenSize.fullScreen}
-        handleFullScreen={handleFullScreen}
-      />
+      <div
+        className={`window shadow-2xs w-full h-full overflow-hidden flex flex-col ${
+          !screenSize.fullScreen && "rounded-lg"
+        } ${
+          currentWindow.isMinimized && "hidden"
+        } transition-all duration-300 ease-in-out`}
+        onClick={handleFocus}
+      >
+        <WindowHeader
+          windowId={windowId}
+          appId={appId}
+          title={title}
+          fullScreen={screenSize.fullScreen}
+          handleFullScreen={handleFullScreen}
+          windowRef={rndRef}
+        />
 
-      <div className="window-body h-full overflow-y-auto">
-        <AppRenderer appId={window.appId} />
+        <div className="window-body h-full overflow-y-auto">
+          <AppRenderer appId={appId} />
+        </div>
       </div>
-    </div>
+    </Rnd>
   );
 }
 

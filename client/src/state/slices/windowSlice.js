@@ -17,10 +17,10 @@ const windowSlice = createSlice({
         appId,
         title: title || appId,
         position: {
-          top: `${30 + state.openWindows.length * 50}px`,
-          left: `${80 + state.openWindows.length * 50}px`,
+          x: 80 + state.openWindows.length * 50,
+          y: 30 + state.openWindows.length * 50,
         },
-        size: { width: "800px", height: "600px" },
+        size: { width: 800, height: 600 },
         zIndex: state.openWindows.length
           ? Math.max(...state.openWindows.map((win) => win.zIndex)) + 1
           : 1,
