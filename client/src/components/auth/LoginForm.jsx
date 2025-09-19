@@ -1,8 +1,14 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Person, PersonCircle } from "react-bootstrap-icons";
-import gsap from "gsap";
+
 import { useDispatch, useSelector } from "react-redux";
+
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+
+import { Person, PersonCircle } from "react-bootstrap-icons";
+
+// Components
 import { loginUser } from "../../state/slices/usersSlice";
 
 function Form({ user }) {
@@ -13,7 +19,7 @@ function Form({ user }) {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
+  useGSAP(() => {
     gsap.to(".wrapper", {
       opacity: 1,
       duration: 1,

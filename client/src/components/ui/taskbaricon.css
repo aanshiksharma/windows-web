@@ -1,6 +1,4 @@
 .taskbar-icon {
-  position: relative;
-
   &.taskbar-icon-focused {
     background: hsl(0 0 90/0.1);
 

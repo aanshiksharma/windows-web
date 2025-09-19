@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 function LockScreen({ settings }) {
   const [timeAndDate, setTimeAndDate] = useState({ time: "", date: "" });
@@ -17,7 +18,7 @@ function LockScreen({ settings }) {
   let wallpaper = "/wallpapers/default.jpg";
   if (currentUser) wallpaper = currentUser.preferences.lockScreenWallpaper;
 
-  useEffect(() => {
+  useGSAP(() => {
     lockScreenRef.current?.focus(); // focus on the #lock-screen div on mount to use keydown events with more control
 
     const interval = setInterval(() => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import "./desktop.css";
 
@@ -11,10 +11,11 @@ import NotificationManager from "./NotificationManager";
 // States and Redux
 import { useDispatch, useSelector } from "react-redux";
 import { unFocusAllApps } from "../../state/slices/taskbarSlice";
+import { unFocusAllWindows } from "../../state/slices/windowSlice";
 
 // Animations
 import gsap from "gsap";
-import { unFocusAllWindows } from "../../state/slices/windowSlice";
+import { useGSAP } from "@gsap/react";
 
 function Desktop() {
   const [wallpaper, setWallpaper] = useState("/wallpapers/default.jpg");
@@ -26,7 +27,7 @@ function Desktop() {
     (state) => state.users.currentUser.layout.desktopApps
   );
 
-  useEffect(() => {
+  useGSAP(() => {
     gsap.to(".starting-animation-overlay", {
       opacity: 0,
       duration: 2,

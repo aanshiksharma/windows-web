@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 function TaskbarClock() {
   const [timeAndDate, setTimeAndDate] = useState({ time: "", date: "" });
 
-  useEffect(() => {
+  useGSAP(() => {
     const taskbarClockInterval = setInterval(() => {
       let now = new Date();
 
@@ -30,7 +31,7 @@ function TaskbarClock() {
       opacity: 0,
       y: 15,
       duration: 0.5,
-      delay: 1,
+      delay: 1, // delay to compensate for the time taken for the program to create the time string.
     });
 
     return () => clearInterval(taskbarClockInterval);

@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router";
+
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { signupUser, guestLogin } from "../../state/slices/usersSlice";
@@ -14,7 +16,7 @@ function SignupForm() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.allUsers);
 
-  useEffect(() => {
+  useGSAP(() => {
     gsap.to(".wrapper", {
       opacity: 1,
       duration: 1,

@@ -1,8 +1,4 @@
-import { useEffect, useState } from "react";
-
 import "./loginscreen.css";
-
-import gsap from "gsap";
 
 // Components
 import SignupForm from "./SignupForm";

@@ -1,5 +1,3 @@
-import gsap from "gsap";
-
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { closeWindow, minimizeWindow } from "../../state/slices/windowSlice";

@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import gsap from "gsap";
 
 import "./taskbaricon.css";
 
@@ -17,6 +16,7 @@ import {
 } from "../../state/slices/windowSlice";
 import { focusApp, openApp, unFocusApp } from "../../state/slices/taskbarSlice";
 
+// Main Component
 function TaskbarIcon({ appId }) {
   const iconRef = useRef();
   const dispatch = useDispatch();
@@ -68,9 +68,9 @@ function TaskbarIcon({ appId }) {
     <button
       ref={iconRef}
       type="button"
-      className={`taskbar-icon btn rounded-sm ${open && "taskbar-icon-open"} ${
-        focused && "taskbar-icon-focused"
-      }`}
+      className={`taskbar-icon relative btn rounded-sm
+        ${open && "taskbar-icon-open"}
+        ${focused && "taskbar-icon-focused"}`}
       onClick={handleClick}
     >
       {app.icon || app.bootstrapIcon ? (

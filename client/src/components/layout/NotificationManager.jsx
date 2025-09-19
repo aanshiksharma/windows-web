@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 import { useSelector } from "react-redux";
 
@@ -12,7 +14,7 @@ function NotificationManager() {
   );
   const prevLengthRef = useRef(popUpNotifications.length);
 
-  useEffect(() => {
+  useGSAP(() => {
     let prevLength = prevLengthRef.current;
     let currLength = popUpNotifications.length;
 
